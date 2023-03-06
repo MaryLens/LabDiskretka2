@@ -14,9 +14,12 @@ public class Graph {
 	Scanner sc = new Scanner(System.in);
 
 	private int nodes, arcs;
+	private ArrayList<ArrayList<Integer>> incMatrix = new ArrayList<>();
+	private ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<>();
 	private ArrayList<ArrayList<Integer>> adjList = new ArrayList<>();
 	private boolean visitedDFS[];
 	private boolean visitedBFS[];
+	private boolean seen[];
 	private Deque<Integer> queue = new ArrayDeque<>();
 
 	public Graph(int nodes, int arcs) {
@@ -24,6 +27,7 @@ public class Graph {
 		this.arcs = arcs;
 		visitedDFS = new boolean[nodes + 1];
 		visitedBFS = new boolean[nodes + 1];
+		seen = new boolean[nodes + 1];
 	}
 
 	public Graph() {
@@ -33,6 +37,7 @@ public class Graph {
 		this.nodes = nodes;
 		visitedDFS = new boolean[nodes + 1];
 		visitedBFS = new boolean[nodes + 1];
+		seen = new boolean[nodes + 1];
 	}
 
 	public void setArcs(int arcs) {
@@ -41,7 +46,7 @@ public class Graph {
 
 
 	public void getAdjList() {
-		System.out.println("Список смежности данного графа:");
+		System.out.println("Г‘ГЇГЁГ±Г®ГЄ Г±Г¬ГҐГ¦Г­Г®Г±ГІГЁ Г¤Г Г­Г­Г®ГЈГ® ГЈГ°Г ГґГ :");
 		for (int i = 0; i < nodes; i++) {
 			System.out.print((i + 1) + ": ");
 			for (int j = 0; j < adjList.get(i).size(); j++) {
@@ -55,7 +60,7 @@ public class Graph {
 	}
 
 	public void setAdjList() {
-		System.out.print("Вводите список смежности:\n");
+		System.out.print("Г‚ГўГ®Г¤ГЁГІГҐ Г±ГЇГЁГ±Г®ГЄ Г±Г¬ГҐГ¦Г­Г®Г±ГІГЁ:\n");
 		for (int i = 0; i < nodes; i++) {
 			adjList.add(new ArrayList<>());
 			System.out.print(" " + (i + 1) + ": ");
@@ -68,7 +73,7 @@ public class Graph {
 	}
 
 
-	// обход графа в глубину
+	// Г®ГЎГµГ®Г¤ ГЈГ°Г ГґГ  Гў ГЈГ«ГіГЎГЁГ­Гі
 	public void depthFirstSearch(int start) {
 		visitedDFS[start] = true;
 		System.out.print(start + " ");
@@ -90,15 +95,17 @@ public class Graph {
 
 	}
 
-	// обход графа в ширину
+	// Г®ГЎГµГ®Г¤ ГЈГ°Г ГґГ  Гў ГёГЁГ°ГЁГ­Гі
 	public void breadthFirstSearch(int start) {
+		seen[start]=true;
 		queue.add(start);
 		while(true) {
 			for (int i = 0; i < adjList.get(start-1).size(); i++) {
-				if(visitedBFS[adjList.get(start-1).get(i)]!=true) {
+				if(seen[adjList.get(start-1).get(i)]!=true) {
 					queue.add(adjList.get(start-1).get(i));
+					seen[adjList.get(start-1).get(i)]=true;
 				}
-				visitedBFS[adjList.get(start-1).get(i)] = true;
+				visitedBFS[start] = true;
 			}
 			System.out.print(queue.pollFirst()+" ");
 			if(!queue.isEmpty()) {
